@@ -1,6 +1,6 @@
-pragma solidity ^ 0.5.2;
+pragma solidity ^ 0.5.8;
 
-import "../ft/fungibleToken.sol";
+import "../ft/FT.sol";
 
 /**
  * @title my simple fungible token

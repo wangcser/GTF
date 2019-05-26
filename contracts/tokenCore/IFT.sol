@@ -1,11 +1,11 @@
-pragma solidity ^0.5.2;
+pragma solidity ^0.5.8;
 
 /**
  * @title Token Core Interface
  * @dev  see the GTF model docs
  */
 
-interface ITokenCore {
+interface IFT {
 
     function transfer(address to, uint256 value) external returns (bool);
     

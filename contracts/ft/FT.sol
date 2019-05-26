@@ -1,6 +1,6 @@
 pragma solidity ^ 0.5.2;
 
-import "../tokenCore/iTokenCore.sol";
+import "../tokenCore/IFT.sol";
 import "../safe/safeMath.sol";
 
 /**
@@ -8,7 +8,7 @@ import "../safe/safeMath.sol";
  * @dev Implementation of the basic standard fungible token.
  */
 
-contract FungibleToken is ITokenCore {
+contract FungibleToken is IFT {
     
     using SafeMath for uint256;
     
