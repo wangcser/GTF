@@ -17,11 +17,14 @@ contract NonFungibleToken is INFT {
     // Mapping from token ID to approved address
     mapping (uint256 => address) private _tokenApprovals;
 
-    // // Mapping from owner to number of owned token
-    // mapping (address => Counters.Counter) private _ownedTokensCount;
+    // 
+    mapping (address => mapping (address => mapping (uint256 => bool))) private _allowed;
+    
+    // Mapping from owner to number of owned token
     mapping (address => uint256) private _balances;
 
-    uint256 private _totalSupply = 0;
+    //
+    uint256 _totalSupply = 0;
 
     function totalSupply() public view returns (uint256) {
         require(msg.sender != address(0));
@@ -57,6 +60,11 @@ contract NonFungibleToken is INFT {
         require(_exists(tid));
 
         return _tokenApprovals[tid];
+    }
+    
+    function allowance(address owner, address oprator, uint256 tid) public view returns (bool) {
+        
+        return _allowed[owner][oprator][tid];
     }
 
     function transfer(address to, uint256 tid) public returns (bool) {
@@ -110,7 +118,7 @@ contract NonFungibleToken is INFT {
     function _clearApproval(uint256 tid) private {
         
         if(_tokenApprovals[tid] != address(0)) {
-            _tokenApprovals[tid] != address(0);
+            _tokenApprovals[tid] = address(0);
         }
     }
 

@@ -11,8 +11,8 @@ import "../sft/SFT.sol";
     string public constant name = "SemiFungibleToken";
     string public constant symbol = "SFT";
     
-    mapping (uint256 => string) public _className;
-    mapping (uint256 => string) public _tokenURIs;
+    mapping (uint256 => string) public classNames;
+    mapping (uint256 => string) public classURIs;
 
     function mint(address to, uint256 cid, uint256 value) public {
         _mint(to, cid, value);

@@ -17,30 +17,16 @@ contract FungibleToken is IFT {
     mapping (address => mapping (address => uint256)) private _allowed;
     
     uint256 private _totalSupply;
-    
-    /**
-    * @dev return the total number of fungible tokens in currency.
-    * @return uint256
-    */
+
+
     function totalSupply() public view returns (uint256) {
         return _totalSupply;
     }
-    
-    /**
-    * @dev return the balance of the speified address
-    * @param owner the address to query the balance of
-    * @return a uint256 num
-    */
+
     function balanceOf(address owner) public view returns (uint256) {
         return _balances[owner];
     }
-    
-    /**
-    * @dev check the amount of tokens that oprator can use
-    * @param owner address 
-    * @param oprator address
-    * @return uint256
-    */
+
     function allowance(address owner, address oprator) public view returns (uint256) {
         return _allowed[owner][oprator];
     }
@@ -57,26 +43,12 @@ contract FungibleToken is IFT {
      return true;
     }
 
-    
-    /**
-    * @dev transfer token to a specified address by token owner
-    * @param to the address to tranfer to 
-    * @param value the amount to be transferred
-    * @return bool
-    */
     function transfer(address to, uint256 value) public returns (bool) {
         _transfer(msg.sender, to, value);
     
        return true;
     }
-    
-    /**
-     * @dev transfer tokens from owner to dest by oprator
-     * @param from owner address
-     * @param to dest address
-     * @param value uint256  
-     * @return bool
-     */
+
     function transferFrom(address from, address to, uint256 value) public returns (bool) {
         _transfer(from, to, value);
         _approve(from, msg.sender, _allowed[from][msg.sender].sub(value));

@@ -13,7 +13,7 @@ contract MyFungibleToken is FungibleToken{
     string public constant symbol = "FT";
     uint8 public constant decimals = 1;
     
-    uint256 internal constant INITIAL_SUPPLY = 100 * (10 ** uint256(decimals));
+    uint256 private constant INITIAL_SUPPLY = 100 * (10 ** uint256(decimals));
 
     /**
     * @dev Constructor that gives msg.sender all of existing tokens.
