@@ -21,7 +21,7 @@ contract NonFungibleToken is INFT {
     // mapping (address => Counters.Counter) private _ownedTokensCount;
     mapping (address => uint256) private _balances;
 
-    uint256 _totalSupply = 0;
+    uint256 private _totalSupply = 0;
 
     function totalSupply() public view returns (uint256) {
         require(msg.sender != address(0));

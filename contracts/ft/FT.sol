@@ -16,7 +16,7 @@ contract FungibleToken is IFT {
     
     mapping (address => mapping (address => uint256)) private _allowed;
     
-    uint256 public _totalSupply;
+    uint256 private _totalSupply;
     
     /**
     * @dev return the total number of fungible tokens in currency.
