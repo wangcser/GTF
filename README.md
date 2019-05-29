@@ -40,6 +40,10 @@ We choose ethereum blockchain as our first test bed, our tool chain as follows:
   - finish the error handing
   - finish GTF docs and manuals
 
+## Safety Statement
+
+This project is only used for my general token model implement, it may has many known or unknown bugs, please do aware it and do not use this project directly for your business projects. 
+
 ## Reference
 
 - wait for add.
