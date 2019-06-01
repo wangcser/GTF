@@ -1,7 +1,7 @@
 pragma solidity ^ 0.5.2;
 
-import "../tokenCore/IFT.sol";
-import "../safe/safeMath.sol";
+import "../core/IFT.sol";
+import "../utils/safeMath.sol";
 
 /**
  * @title Standard fungible token
@@ -9,14 +9,13 @@ import "../safe/safeMath.sol";
  */
 
 contract FungibleToken is IFT {
-    
+    // using safe math lib to prevent overflow
     using SafeMath for uint256;
     
-    mapping (address => uint256) private _balances;
-    
-    mapping (address => mapping (address => uint256)) private _allowed;
-    
-    uint256 private _totalSupply;
+    // state in blockchain
+    mapping (address => uint256) internal _balances;
+    mapping (address => mapping (address => uint256)) internal _allowed;
+    uint256 internal _totalSupply;
 
 
     function totalSupply() public view returns (uint256) {
@@ -27,36 +26,37 @@ contract FungibleToken is IFT {
         return _balances[owner];
     }
 
-    function allowance(address owner, address oprator) public view returns (uint256) {
-        return _allowed[owner][oprator];
+    function allowance(address owner, address operator) public view returns (uint256) {
+        return _allowed[owner][operator];
     }
     
     /**
      * @dev approve the passed address to spend the specified amount of tokens on behalf pf msg.sender
-     * @param oprator address
+     * @param operator address
      * @param value uint256
      * @return bool
      */
-    function approve(address oprator, uint256 value) public returns (bool) {
-        _approve(msg.sender, oprator, value);
-    
-     return true;
+    function approve(address operator, uint256 value) public returns (bool) {
+        _approve(msg.sender, operator, value);
+        return true;
     }
 
     function transfer(address to, uint256 value) public returns (bool) {
-        _transfer(msg.sender, to, value);
-    
+        _transferFrom(msg.sender, to, value);
        return true;
     }
 
     function transferFrom(address from, address to, uint256 value) public returns (bool) {
-        _transfer(from, to, value);
-        _approve(from, msg.sender, _allowed[from][msg.sender].sub(value));
-    
-     return true;
+        
+        // TODO: owner should use transfer and operator should use this method
+        require(allowance(from, msg.sender) >= value);
+        uint newAllowed = _allowed[from][msg.sender].sub(value);
+        _approve(from, msg.sender, newAllowed);
+        _transferFrom(from, to, value);
+        return true;
     }
     
-    function _transfer(address from, address to, uint256 value) internal {
+    function _transferFrom(address from, address to, uint256 value) private {
         require(to != address(0));
         
         _balances[from] = _balances[from].sub(value);
@@ -65,21 +65,12 @@ contract FungibleToken is IFT {
         emit Transfer(from, to, value);
     }
     
-    function _approve(address owner, address spender, uint256 value) internal {
-        require(spender != address(0));
+    function _approve(address owner, address operator, uint256 value) private {
+        require(operator != address(0));
         require(owner != address(0));
         
-        _allowed[owner][spender] = value;
+        _allowed[owner][operator] = value;
         
-        emit Approval(owner, spender, value);
-    }
-    
-    function _mint(address miner, uint256 value) internal {
-        require(miner != address(0));
-        
-        _totalSupply = _totalSupply.add(value);
-        _balances[miner] = _balances[miner].add(value);
-        
-        emit Transfer(address(0), miner, value);
+        emit Approval(owner, operator, value);
     }
  }

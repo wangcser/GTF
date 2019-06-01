@@ -4,8 +4,8 @@ import "../ft/FT.sol";
 
 /**
  * @title my simple fungible token
- * @dev 
-  */
+ * @dev contract function test ok
+ */
 
 contract MyFungibleToken is FungibleToken{
     
@@ -21,5 +21,13 @@ contract MyFungibleToken is FungibleToken{
     constructor() public {
         _mint(msg.sender, INITIAL_SUPPLY);
     }
-    
+
+    function _mint(address miner, uint256 value) internal {
+        require(miner != address(0));
+
+        _totalSupply = _totalSupply.add(value);
+        _balances[miner] = _balances[miner].add(value);
+        
+        emit Transfer(address(0), miner, value);
+    }
 }

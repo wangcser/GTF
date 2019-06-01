@@ -1,26 +1,57 @@
 pragma solidity ^0.5.8;
 
+import "../utils/SafeMath.sol";
+import "../core/ISFT.sol";
+import "../core/ISFTEnumerable.sol";
+
 /**
  * @title Token Core Interface
- * @dev  see the GTF model docs
+ * @dev  
  */
 
-import "../SafeMath.sol"
-import "../tokenCore/ISFT.sol"
+contract SemiFungibleToken is ISFT, ISFTEumerable {
 
-contract SemiFungibleToken is ISFT {
     using SafeMath for uint256;
 
+    // state in blockchain
     mapping (address => uint256) internal _totalBalances;
-
     mapping (address => mapping (uint256 => uint256)) internal _balances;
-
     mapping (address => mapping (address => mapping (uint256 => uint256))) internal _approvals;
-
     uint256 _totalSupply;
     mapping (uint256 => uint256) _classSupply;
 
 
+    // read-state methods
+    function totalSupplyByClass(uint256 cid) public view returns (uint256) {
+        return _totalSupplyByClass[cid];
+    }
+
+    function balanceOfByClass(address owner, uint256 cid) public view returns (uint256) {
+        require(owner != address(0));
+        return _balancesByClass[owner][cid];
+    }
+
+    function allowance(address owner, address operator, uint256 cid) public view returns (uint256) {
+        return _approvals[owner][oprator][cid];
+    }
+    
+    function totalClassSupply() public view returns (uint256[] memory) {
+        _;
+    }
+    
+    function totalSupply() public view returns (uint256) {
+        _;
+    }
+
+    function ownedClass(address owner) public view returns (uint256[] memory) {
+        _;
+    }
+
+    function balanceOf(address owner) external view returns (uint256[] memory, uint256[] memory) {
+        _;
+    }
+
+    // write-state methods
     function transfer(address to, uint256 cid, uint256 value) public returns (bool) {
         
         require(to != address(0), "to can't be init address.");
@@ -54,33 +85,7 @@ contract SemiFungibleToken is ISFT {
         emit Approval(owner, oprator, cid, value);
     }
 
-    function totalSupply() public view returns (uint256) {
-
-        return _totalSupply;
-    }
-
-    function classSupply(uint256 cid) public view returns (uint256) {
-        return _classSupply[cid];
-    }
-
-    function balanceOf(address owner) public view returns (uint256) {
-        require(owner != address(0));
-
-        return _totalBalances[owner];
-    }
-
-    function balanceOfByClass(address owner, uint256 cid) public view returns (uint256) {
-        require(owner != address(0));
-
-        return _balances[owner][cid];
-    }
-
-    function allowance(address owner, address oprator, uint256 cid) public view returns (uint256) {
-
-        return _approvals[owner][oprator][cid];
-
-    }
-
+    // internal write-state methods
     function _mint(address to, uint256 cid, uint256 value) internal returns (bool) {
         
         _balances[to][cid] = _balances[to][cid].add(value);

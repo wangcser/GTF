@@ -1,131 +1,91 @@
 pragma solidity ^0.5.8;
 
-import "../tokenCore/INFT.sol";
+import "../core/INFT.sol";
+import "../core/INFTEnumerable.sol";
 import "../utils/SafeMath.sol";
-// import "../utils/Address.sol";
-// import "../utils/Counters.sol";
-// import "../utils/ERC165.sol";
-/**
- */
-contract NonFungibleToken is INFT {
+
+contract NonFungibleToken is INFT, INFTEnumerable {
 
     using SafeMath for uint256;
+    // state in blockchain
+    mapping(uint256 => address) internal _tokenToOwner;
+    mapping(uint256 => address) private _approvals;
+    uint256 internal _totalSupplyByAmount = 0;
+    mapping(address => uint256) internal _balancesByAmount;
+    uint256[] internal _totalSupply;
 
-    // Mapping from token ID to owner
-    mapping (uint256 => address) private _tokenOwner;
-
-    // Mapping from token ID to approved address
-    mapping (uint256 => address) private _tokenApprovals;
-
-    // 
-    mapping (address => mapping (address => mapping (uint256 => bool))) private _allowed;
-    
-    // Mapping from owner to number of owned token
-    mapping (address => uint256) private _balances;
-
-    //
-    uint256 _totalSupply = 0;
-
-    function totalSupply() public view returns (uint256) {
-        require(msg.sender != address(0));
-
-        return _totalSupply;
+    // read-state methods
+    function totalSupplyByAmount() public view returns (uint256) {
+        return _totalSupplyByAmount;
     }
 
-    function balanceOf(address owner) public view returns (uint256) {
-        require(owner != address(0));
-
-        return _balances[owner];
+    function balanceOfByAmount(address owner) public view returns (uint256) {
+        return _balancesByAmount[owner];
     }
 
     function ownerOf(uint256 tid) public view returns (address) {
-        address owner = _tokenOwner[tid];
-        
-        return owner;
-    }
-
-    function approve(address oprator, uint256 tid) public returns (bool) {
-        address owner = ownerOf(tid);
-        
-        require(msg.sender == owner);
-        
-        _tokenApprovals[tid] = oprator;
-        
-        emit Approval(owner, oprator, tid);
-
-        return true;
+        return _tokenToOwner[tid];
     }
 
     function getApproved(uint256 tid) public view returns (address) {
-        require(_exists(tid));
-
-        return _tokenApprovals[tid];
-    }
-    
-    function allowance(address owner, address oprator, uint256 tid) public view returns (bool) {
-        
-        return _allowed[owner][oprator][tid];
+        return _approvals[tid];
     }
 
+    function totalSupply() public view returns (uint256[] memory) {
+        return _totalSupply;
+    }
+
+    function balanceOf(address owner) external view returns (uint256[] memory) {
+        uint256 len = balanceOfByAmount(owner);
+        uint256[] memory balances = new uint[](len);
+        uint index = 0;
+
+        for(uint i = 0; i < _totalSupply.length; i++) {
+            if(ownerOf(_totalSupply[i]) == owner) {
+                balances[index] = (_totalSupply[i]);
+                index++;
+            }   
+        }
+        return balances;
+    }
+
+    // write-state methods
     function transfer(address to, uint256 tid) public returns (bool) {
-
         _transferFrom(msg.sender, to, tid);
-
         return true;
     }
-
 
     function transferFrom(address from, address to, uint256 tid) public returns (bool) {
-        address oprator = getApproved(tid);
-        
-        require(msg.sender == oprator);
-
+        require(msg.sender == getApproved(tid));
         _transferFrom(from, to, tid);
-
         return true;
     }
 
-    function _mint(address to, uint256 tid) internal {
-
-        require(to != address(0));
-        
-        require(!_exists(tid));
-
-        _tokenOwner[tid] = to;
-        _totalSupply = _totalSupply.add(1);
-        _balances[to] = _balances[to].add(1);
-
-        emit Transfer(address(0), to, tid);
+    function approve(address operator, uint256 tid) public returns (bool) {
+        require(msg.sender == ownerOf(tid));
+        _approvals[tid] = operator;
+        emit Approval(msg.sender, operator, tid);
+        return true;
     }
 
+    // internal write-state methods
     function _transferFrom(address from, address to, uint256 tid) internal {
         require(to != address(0));
-        
-        address owner = ownerOf(tid);
-        
-        require(from == owner);
+        require(from == ownerOf(tid));
 
         _clearApproval(tid);
 
-        _tokenOwner[tid] = to;
+        _tokenToOwner[tid] = to;
         
-        _balances[from] = _balances[from].sub(1);
-        _balances[to] = _balances[to].add(1);
+        _balancesByAmount[from] = _balancesByAmount[from].sub(1);
+        _balancesByAmount[to] = _balancesByAmount[to].add(1);
 
         emit Transfer(from, to, tid);
     }
 
     function _clearApproval(uint256 tid) private {
-        
-        if(_tokenApprovals[tid] != address(0)) {
-            _tokenApprovals[tid] = address(0);
+        if(_approvals[tid] != address(0)) {
+            _approvals[tid] = address(0);
         }
     }
-
-    function _exists(uint256 tid) private view returns (bool) {
-        address owner = _tokenOwner[tid];
-
-        return owner != address(0);
-    }
-
 }
