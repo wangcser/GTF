@@ -11,7 +11,7 @@ contract MyNonFungibleToken is NonFungibleToken, utils {
     
     string public constant name = "NonFungibleToken";
     string public constant symbol = "NFT";
-    mapping (uint256 => string) public tokenURIs;
+    mapping (uint256 => string) internal tokenURIs;
 
     function mint(address to, uint256 tid) public {
         _mint(to, tid);
@@ -31,7 +31,7 @@ contract MyNonFungibleToken is NonFungibleToken, utils {
         emit Transfer(address(0), to, tid);
     }
 
-    function _exists(uint256 tid) private view returns (bool) {
+    function _exists(uint256 tid) internal view returns (bool) {
         return _tokenToOwner[tid] != address(0);
     }
 }

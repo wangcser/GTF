@@ -11,13 +11,13 @@ interface INFT {
     event Approval(address indexed owner, address indexed operator, uint256 indexed tid);
 
     // read-state methods    
-    function totalSupplyByAmount() external view returns (uint256);
+    // function totalSupplyByAmount() external view returns (uint256);
 
-    function balanceOfByAmount(address owner) external view returns (uint256);
+    // function balanceOfByAmount(address owner) external view returns (uint256);
 
     function ownerOf(uint256 tid) external view returns (address);
     
-    function getApproved(uint256 tid) external view returns (address);
+    function allowance(uint256 tid) external view returns (address);
     
     // write-state methods
     function transfer(address to, uint256 tid) external returns (bool);

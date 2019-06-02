@@ -2,42 +2,40 @@ pragma solidity ^0.5.8;
 
 import "../sft/SFT.sol";
 /**
- * @title Token Core Interface
- * @dev  see the GTF model docs
+ * @title
+ * @dev  contract function test ok
  */
 
-  contract MySemiFungibleToken is SemiFungibleToken {
+contract MySemiFungibleToken is SemiFungibleToken {
     
     string public constant name = "SemiFungibleToken";
     string public constant symbol = "SFT";
     
-    mapping (uint256 => string) public classNames;
-    mapping (uint256 => string) public classURIs;
+    mapping (uint256 => string) private classNames;
+    mapping (uint256 => string) private classURIs;
 
     function mint(address to, uint256 cid, uint256 value) public {
         _mint(to, cid, value);
     }
     
-    function setClassName(uint256 cid, string memory className) public {
+    function setClassName(uint256 cid, string memory className) private {
         classNames[cid] = className;
     }
     
-    function setClassURI(uint256 cid, string memory classURI) public {
+    function setClassURI(uint256 cid, string memory classURI) private {
         classURIs[cid] = classURI;
     }
 
     function _mint(address to, uint256 cid, uint256 value) internal returns (bool) {
-        
+        if(totalSupplyByClass(cid) == 0) {
+            _totalClass.push(cid);
+        }
         _totalSupplyByClass[cid] = _totalSupplyByClass[cid].add(value);
+        
+        if(balanceOfByClass(to, cid) == 0) {
+            _ownedClassNum[to]++;
+        }
         _balancesByClass[to][cid] = _balancesByClass[to][cid].add(value);
-        
-        if(!_classExist(cid)) {
-            _totalClassSupply.push(cid);
-        }
-        
-        if(!_ownedClassExist(to, cid)) {
-            _ownedClass[to].push(cid);
-        }
 
         emit Transfer(address(0), to, cid, value);
     }

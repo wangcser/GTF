@@ -11,9 +11,9 @@ interface ISFT {
     event Approval(address indexed owner, address indexed operator, uint256 indexed cid, uint256 value);
 
     // read-state methods
-    function totalSupplyByClass(uint256 cid) external view returns (uint256);
+    // function totalSupplyByClass(uint256 cid) external view returns (uint256);
 
-    function balanceOfByClass(address owner, uint256 cid) external view returns (uint256);
+    // function balanceOfByClass(address owner, uint256 cid) external view returns (uint256);
 
     function allowance(address owner, address oprator, uint256 cid) external view returns (uint256);
 

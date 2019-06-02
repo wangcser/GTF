@@ -9,17 +9,17 @@ contract NonFungibleToken is INFT, INFTEnumerable {
     using SafeMath for uint256;
     // state in blockchain
     mapping(uint256 => address) internal _tokenToOwner;
-    mapping(uint256 => address) private _approvals;
+    mapping(uint256 => address) internal _approvals;
     uint256 internal _totalSupplyByAmount = 0;
     mapping(address => uint256) internal _balancesByAmount;
     uint256[] internal _totalSupply;
 
     // read-state methods
-    function totalSupplyByAmount() public view returns (uint256) {
+    function totalSupplyByAmount() internal view returns (uint256) {
         return _totalSupplyByAmount;
     }
 
-    function balanceOfByAmount(address owner) public view returns (uint256) {
+    function balanceOfByAmount(address owner) internal view returns (uint256) {
         return _balancesByAmount[owner];
     }
 
@@ -27,7 +27,7 @@ contract NonFungibleToken is INFT, INFTEnumerable {
         return _tokenToOwner[tid];
     }
 
-    function getApproved(uint256 tid) public view returns (address) {
+    function allowance(uint256 tid) public view returns (address) {
         return _approvals[tid];
     }
 
@@ -56,7 +56,7 @@ contract NonFungibleToken is INFT, INFTEnumerable {
     }
 
     function transferFrom(address from, address to, uint256 tid) public returns (bool) {
-        require(msg.sender == getApproved(tid));
+        require(msg.sender == allowance(tid));
         _transferFrom(from, to, tid);
         return true;
     }
