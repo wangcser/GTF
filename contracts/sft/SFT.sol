@@ -9,16 +9,17 @@ import "../core/ISFTEnumerable.sol";
  * @dev  
  */
 
-contract SemiFungibleToken is ISFT, ISFTEumerable {
+contract SemiFungibleToken is ISFT, ISFTEnumerable {
 
     using SafeMath for uint256;
 
     // state in blockchain
-    mapping (address => uint256) internal _totalBalances;
-    mapping (address => mapping (uint256 => uint256)) internal _balances;
-    mapping (address => mapping (address => mapping (uint256 => uint256))) internal _approvals;
-    uint256 _totalSupply;
-    mapping (uint256 => uint256) _classSupply;
+    mapping(uint256 => uint256) internal _totalSupplyByClass;
+    mapping(address => mapping (uint256 => uint256)) internal _balancesByClass;
+    mapping(address => mapping (address => mapping (uint256 => uint256))) internal _approvals;
+    uint256[] internal _totalClassSupply;
+    mapping(address =>uint256[]) internal _ownedClass;
+
 
 
     // read-state methods
@@ -27,73 +28,83 @@ contract SemiFungibleToken is ISFT, ISFTEumerable {
     }
 
     function balanceOfByClass(address owner, uint256 cid) public view returns (uint256) {
-        require(owner != address(0));
         return _balancesByClass[owner][cid];
     }
 
     function allowance(address owner, address operator, uint256 cid) public view returns (uint256) {
-        return _approvals[owner][oprator][cid];
+        return _approvals[owner][operator][cid];
     }
     
     function totalClassSupply() public view returns (uint256[] memory) {
-        _;
+        return _totalClassSupply;
     }
     
-    function totalSupply() public view returns (uint256) {
-        _;
+    function totalSupply() public view returns (uint256[] memory) {
+        uint256 len = _totalClassSupply.length;
+        uint256[] memory _totalSupply = new uint256[](len);
+        for(uint i = 0; i <_totalClassSupply.length; i++) {
+            _totalSupply[i] = totalSupplyByClass(_totalClassSupply[i]);
+        }
+        return _totalSupply;
     }
 
     function ownedClass(address owner) public view returns (uint256[] memory) {
-        _;
+        return _ownedClass[owner];
     }
 
-    function balanceOf(address owner) external view returns (uint256[] memory, uint256[] memory) {
-        _;
+    function balanceOf(address owner) external view returns (uint256[] memory) {
+        uint256 len = _ownedClass[owner].length;
+        uint256[] memory _balances = new uint256[](len);
+        for(uint i = 0; i <_totalClassSupply.length; i++) {
+            _balances[i] = balanceOfByClass(owner, _ownedClass[owner][i]);
+        }
+        return _balances;
     }
 
     // write-state methods
-    function transfer(address to, uint256 cid, uint256 value) public returns (bool) {
-        
+    function transfer(address to, uint256 cid, uint256 value) public {
         require(to != address(0), "to can't be init address.");
-
-        address owner = msg.sender;
-        
-        _balances[owner][cid] = _balances[owner][cid].sub(value);
-        _balances[to][cid] = _balances[to][cid].add(value);
-
-        emit Transfer(owner, to, cid, value);
-
-        return true;
+        _transferFrom(msg.sender, to, cid, value);
+        emit Transfer(msg.sender, to, cid, value);
     }
 
-    function transferFrom(address from, address to, uint256 cid, uint256 value) public returns (bool) {
-        // require(msg.sender == oprator)
-
-        _balances[from][cid] = _balances[from][cid].sub(value);
-        _balances[to][cid] = _balances[to][cid].add(value);
-
+    function transferFrom(address from, address to, uint256 cid, uint256 value) public {
+        require(to != address(0));
+        require(_approvals[from][msg.sender][cid] >= value);
+        _transferFrom(from, to, cid, value);
         emit Transfer(from, to, cid, value);
-
-        return true;
     }
 
-    function approve(address oprator, uint256 cid, uint256 value) public returns (bool) {
-
-        address owner = msg.sender;
-        _approvals[owner][oprator][cid] = _approvals[owner][oprator][cid].add(value);
-
-        emit Approval(owner, oprator, cid, value);
+    function approve(address operator, uint256 cid, uint256 value) public {
+        _approve(msg.sender, operator, cid, value);
+        emit Approval(msg.sender, operator, cid, value);
     }
 
-    // internal write-state methods
-    function _mint(address to, uint256 cid, uint256 value) internal returns (bool) {
+    function _transferFrom(address from, address to, uint256 cid, uint256 value) internal {
+        _balancesByClass[from][cid] = _balancesByClass[from][cid].sub(value);
+        _balancesByClass[to][cid] = _balancesByClass[to][cid].add(value);
         
-        _balances[to][cid] = _balances[to][cid].add(value);
-        _totalBalances[to] = _totalBalances[to].add(value);
-        
-        _totalSupply = _totalSupply.add(value);
-        _classSupply[cid] = _classSupply[cid].add(value);
-
-        emit Transfer(address(0), to, cid, value);
+    }
+    
+    function _approve(address owner, address operator, uint256 cid, uint256 value) internal {
+        _approvals[owner][operator][cid] = _approvals[owner][operator][cid].add(value);
+    }
+    
+    function _classExist(uint256 cid) internal view returns (bool) {
+        for(uint i = 0; i < _totalClassSupply.length; i++) {
+            if(_totalClassSupply[i] == cid) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    function _ownedClassExist(address owner, uint256 cid) internal view returns (bool) {
+        for(uint i = 0; i < _ownedClass[owner].length; i++) {
+            if(_ownedClass[owner][i] == cid) {
+                return true;
+            }
+        }
+        return false;
     }
 }
