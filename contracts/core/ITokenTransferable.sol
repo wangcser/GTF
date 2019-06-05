@@ -1,3 +1,9 @@
+/**
+ * @title A common defination for transfer operation
+ * @author wangcser
+ */
+
+
 pragma solidity ^0.5.8;
 
 interface ITokenTransferable {

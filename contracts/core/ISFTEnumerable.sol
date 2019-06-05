@@ -1,3 +1,11 @@
+/**
+ * @title A defination of semi-fungible token interface for enumerable operation
+ * @author wangcser
+ * @notice end user can use this contract for their SFT model to support additional enumerable operations
+ * @dev see SFT and GTF docs for more details
+ */
+
+
 pragma solidity ^0.5.8;
 
 

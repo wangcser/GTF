@@ -1,3 +1,11 @@
+/**
+ * @title An implementation of non-fungible token interface
+ * @author wangcser
+ * @notice end user can use this contract for their NFT model
+ * @dev see NFT and GTF docs for more details
+ */
+
+
 pragma solidity ^0.5.8;
 
 import "../utils/SafeMath.sol";
@@ -90,7 +98,7 @@ contract NonFungibleToken is INFT {
 
         emit Transfer(from, to, tid);
     }
-    
+
     function _exists(uint256 tid) internal view returns (bool) {
         return _tokenToOwner[tid] != address(0);
     }

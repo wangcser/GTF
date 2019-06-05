@@ -1,3 +1,11 @@
+/**
+ * @title An implementation of fungible token interface
+ * @author wangcser
+ * @notice end user can use this contract for their FT model
+ * @dev see FT and GTF docs for more details
+ */
+
+
 pragma solidity ^ 0.5.8;
 
 import "../utils/safeMath.sol";

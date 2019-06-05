@@ -1,3 +1,10 @@
+/**
+ * @title A sample of fungible token
+ * @author wangcser
+ * @dev end user can use this contract for reference
+ */
+
+
 pragma solidity ^ 0.5.8;
 
 import "../ft/FT.sol";

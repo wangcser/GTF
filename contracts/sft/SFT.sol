@@ -1,3 +1,11 @@
+/**
+ * @title An implementation of semi-fungible token interface
+ * @author wangcser
+ * @notice end user can use this contract for their SFT model
+ * @dev see SFT and GTF docs for more details
+ */
+
+
 pragma solidity ^0.5.8;
 
 import "../utils/SafeMath.sol";
