@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?><diagram program="umlet" version="13.3">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>970</x>
+      <y>660</y>
+      <w>470</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>Interface: IFT
+--
++ transfer(address to, uint256 value)
++ transferFrom(address from, address to, uint256 value)
++ approve(address operator, uint256 value)
++ totalSupply(): uint256
++ balanceOf(address owner): uint256
++ allowance(address owner, address operator): uint256
+--
+Transfer(address from, address to, uint256 value)
+Approval(address owner, address operator, uint256 value)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1460</x>
+      <y>660</y>
+      <w>470</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Interface: ISFT
+--
++ transfer(address to, uint256 cid, uint256 value)
++ transferFrom(address from, address to, uint256 cid, uint256 value)
++ approve(address operator, uint256 cid, uint256 value)
++ allowance(address owner, address operator, uint256 cid): uint256
+--
+Transfer(address from, address to, uint256 cid, uint256 value)
+Approval(address owner, address operator, uint256 cid, uint256 value)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1940</x>
+      <y>660</y>
+      <w>470</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Interface: ISFTEnumerable
+--
++ totalSupply(): uint256[], uint256[]
++ balanceOf(address owner): uint256[], uint256[]</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>480</x>
+      <y>660</y>
+      <w>470</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>Interface: INFT
+--
++ transfer(address to, uint256 tid)
++ transferFrom(address from, address to, uint256 tid)
++ approve(address operator, uint256 tid)
++ ownerOf(uint256 tid): address
++ allowance(uint256 tid): address
+--
+Transfer(address from, address to, uint256 tid)
+Approval(address owner, address operator, uint256 tid)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>660</y>
+      <w>470</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Interface: INFTEnumerable
+--
++ totalSupply(): uint256[]
++ balanceOf(address owner): uint256[]</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>970</x>
+      <y>860</y>
+      <w>470</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>Contract: FungibleToken (FT)
+--
+- _balances: address =&gt; uint256
+- _allowed: address =&gt; address =&gt; uint256
+- _totalSupply: uint256
+--
+- _transferFrom(address from, address to, uint256 value)
+- _approve(address owner, address operator, uint256 value)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>240</x>
+      <y>860</y>
+      <w>470</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>Contract: NonFungibleToken (NFT)
+--
+- _tokenToOwner: uint256 =&gt; address
+- _approvals: uint256 =&gt; address
+- __totalSupplyByAmount: uint256
+- _balancesByAmount: address =&gt; uint256
+- _totalSupply: uint256[]
+--
+- totalSupplyByAmount(): uint256
+- balanceOfByAmount(address owner): uint256
+- _transferFrom(address from, address to, uint256 value)
+- _approve(address owner, address operator, uint256 value)
+- clearApproval(uint256 tid)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1710</x>
+      <y>860</y>
+      <w>470</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>Contract: SemiFungibleToken (SFT)
+--
+- _totalClass: uint256[]
+- _totalSupplyByClass: uint256 =&gt; uint256
+- _ownedClassNum: address =&gt; uint256
+- _balancesByClass: address =&gt; uint256 =&gt; uint256
+- _approvals: address =&gt; address =&gt; uint256 =&gt; uint256
+--
+- totalSupplyByClass(uint cid): uint256
+- totalClass(): uint256[]
+- balanceOfByClass(address owner, uint256 cid): uint256
+- _ownedClass(address owner): uint256[]
+- classExist(uint256 cid): bool
+- _ownedClassExist(address owner, uint256 cid): bool</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>970</x>
+      <y>1090</y>
+      <w>470</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Contract: MyFungibleToken
+--
++ name: string
++ symbol: string
++ decimals: string
+- INITIAL_SUPPLY: uint256
+--
++ mint(address miner, uint256 value)
+- _mint(address miner, uint256 value)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>240</x>
+      <y>1090</y>
+      <w>470</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>Contract: MyNonFungibleToken
+--
++ name: string
++ symbol: string
++ tokenURIs: uint256 =&gt; string
+--
++ mint(address miner, uint256 tid)
+- _mint(address miner, uint256 tid)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1710</x>
+      <y>1090</y>
+      <w>470</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>Contract: MySemiFungibleToken
+--
++ name: string
++ symbol: string
++ tokenURIs: uint256 =&gt; string
+--
++ mint(address miner, uint256 cid, uint256 value)
+- _mint(address miner, uint256 cid, uint256 value)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>970</x>
+      <y>420</y>
+      <w>470</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Interface: ITOKEN
+--
++ transfer()
++ transferFrom()
++ approve()
++ allowance()
++ balanceOf()
++ totalSupply()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>710</x>
+      <y>530</y>
+      <w>500</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>480.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1200</x>
+      <y>960</y>
+      <w>30</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>450</x>
+      <y>1030</y>
+      <w>30</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1920</x>
+      <y>1040</y>
+      <w>30</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1200</x>
+      <y>800</y>
+      <w>30</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1220</x>
+      <y>530</y>
+      <w>510</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;490.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1200</x>
+      <y>530</y>
+      <w>30</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>460</x>
+      <y>790</y>
+      <w>280</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>260.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>210</x>
+      <y>710</y>
+      <w>280</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;260.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1700</x>
+      <y>770</y>
+      <w>260</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;240.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1930</x>
+      <y>710</y>
+      <w>270</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>250.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+</diagram>

@@ -1,23 +1,21 @@
-pragma solidity ^ 0.5.2;
+pragma solidity ^ 0.5.8;
 
-import "../core/IFT.sol";
 import "../utils/safeMath.sol";
+import "../core/IFT.sol";
 
-/**
- * @title Standard fungible token
- * @dev Implementation of the basic standard fungible token.
- */
 
 contract FungibleToken is IFT {
     // using safe math lib to prevent overflow
     using SafeMath for uint256;
     
+
     // state in blockchain
-    mapping (address => uint256) internal _balances;
-    mapping (address => mapping (address => uint256)) internal _allowed;
+    mapping(address => uint256) internal _balances;
+    mapping(address => mapping(address => uint256)) internal _approvals;
     uint256 internal _totalSupply;
 
 
+    // read-state methods
     function totalSupply() public view returns (uint256) {
         return _totalSupply;
     }
@@ -27,50 +25,41 @@ contract FungibleToken is IFT {
     }
 
     function allowance(address owner, address operator) public view returns (uint256) {
-        return _allowed[owner][operator];
+        return _approvals[owner][operator];
     }
-    
-    /**
-     * @dev approve the passed address to spend the specified amount of tokens on behalf pf msg.sender
-     * @param operator address
-     * @param value uint256
-     * @return bool
-     */
-    function approve(address operator, uint256 value) public returns (bool) {
+
+    // write-state methods
+    function approve(address operator, uint256 value) public {
         _approve(msg.sender, operator, value);
-        return true;
     }
 
-    function transfer(address to, uint256 value) public returns (bool) {
+    function transfer(address to, uint256 value) public {
         _transferFrom(msg.sender, to, value);
-       return true;
     }
 
-    function transferFrom(address from, address to, uint256 value) public returns (bool) {
-        
-        // TODO: owner should use transfer and operator should use this method
-        require(allowance(from, msg.sender) >= value);
-        uint newAllowed = _allowed[from][msg.sender].sub(value);
+    function transferFrom(address from, address to, uint256 value) public {
+        require(allowance(from, msg.sender) >= value, "insufficient allowance");
+
+        uint newAllowed = _approvals[from][msg.sender].sub(value);
         _approve(from, msg.sender, newAllowed);
         _transferFrom(from, to, value);
-        return true;
     }
-    
+
     function _transferFrom(address from, address to, uint256 value) private {
-        require(to != address(0));
-        
+        require(to != address(0), "recipent address invalid.");
+
         _balances[from] = _balances[from].sub(value);
         _balances[to] = _balances[to].add(value);
-        
+
         emit Transfer(from, to, value);
     }
-    
+
     function _approve(address owner, address operator, uint256 value) private {
-        require(operator != address(0));
-        require(owner != address(0));
-        
-        _allowed[owner][operator] = value;
-        
+        require(operator != address(0), "operator address invalid.");
+        require(owner != address(0), "owner address invalid.");
+
+        _approvals[owner][operator] = value;
+
         emit Approval(owner, operator, value);
     }
  }
