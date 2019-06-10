@@ -8,9 +8,10 @@
 pragma solidity ^0.5.8;
 
 import "../sft/SFT.sol";
+import "../core/ISFTMetadata.sol";
 
 
-contract MySemiFungibleToken is SemiFungibleToken {
+contract MySemiFungibleToken is SemiFungibleToken, ISFTMetadata {
 
     string public constant name = "SemiFungibleToken";
     string public constant symbol = "SFT";
@@ -29,10 +30,10 @@ contract MySemiFungibleToken is SemiFungibleToken {
         }
         _totalSupplyByClass[cid] = _totalSupplyByClass[cid].add(value);
 
-        if(balanceOfByClass(to, cid) == 0) {
-            _ownedClassNum[to]++;
+        if(balanceOfByClass(miner, cid) == 0) {
+            _ownedClassNum[miner]++;
         }
-        _balancesByClass[to][cid] = _balancesByClass[to][cid].add(value);
+        _balancesByClass[miner][cid] = _balancesByClass[miner][cid].add(value);
 
         emit Transfer(address(0), miner, cid, value);
     }

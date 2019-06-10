@@ -8,9 +8,10 @@
 pragma solidity ^ 0.5.8;
 
 import "../ft/FT.sol";
+import "../core/IFTMetadata.sol";
 
 
-contract MyFungibleToken is FungibleToken{
+contract MyFungibleToken is FungibleToken, IFTMetadata {
 
     string public constant name = "FungibleToken";
     string public constant symbol = "FT";

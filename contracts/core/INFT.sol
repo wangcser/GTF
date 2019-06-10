@@ -8,18 +8,14 @@
 
 pragma solidity ^0.5.8;
 
-import "./INFTEnumerable.sol";
-import "./INFTMetadata.sol";
 
-
-interface INFT is INFTEnumerable {
+interface INFT {
     // events
     event Transfer(address indexed from, address indexed to, uint256 indexed tid);
     event Approval(address indexed owner, address indexed operator, uint256 indexed tid);
 
 
     // read-state methods for single user and single NFT
-
     /**
      * @dev get nft current owner address
      * @param tid nft-id
@@ -36,7 +32,6 @@ interface INFT is INFTEnumerable {
 
 
     // write-state methods
-
     /**
      * @dev transfer nft from owner to recipent
      * @param to address of nft recipent

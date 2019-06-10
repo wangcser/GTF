@@ -8,9 +8,10 @@
 pragma solidity ^ 0.5.8;
 
 import "../nft/NFT.sol";
+import "../core/INFTMetadata.sol";
 
 
-contract MyNonFungibleToken is NonFungibleToken, utils {
+contract MyNonFungibleToken is NonFungibleToken, INFTMetadata {
 
     string public constant name = "NonFungibleToken";
     string public constant symbol = "NFT";

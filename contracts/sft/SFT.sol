@@ -10,9 +10,10 @@ pragma solidity ^0.5.8;
 
 import "../utils/SafeMath.sol";
 import "../core/ISFT.sol";
+import "../core/ISFTEnumerable.sol";
 
 
-contract SemiFungibleToken is ISFT {
+contract SemiFungibleToken is ISFT, ISFTEnumerable {
 
     using SafeMath for uint256;
 
@@ -82,7 +83,7 @@ contract SemiFungibleToken is ISFT {
 
     // write-state methods use to check valid result and run in valid pattern.
     function transfer(address to, uint256 cid, uint256 value) public {
-        require(_balancesByClass[from][cid] >= value, "owner do not have enough amount");
+        require(_balancesByClass[msg.sender][cid] >= value, "owner do not have enough amount");
 
         _transferFrom(msg.sender, to, cid, value);
     }

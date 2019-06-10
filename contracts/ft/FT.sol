@@ -8,11 +8,12 @@
 
 pragma solidity ^ 0.5.8;
 
-import "../utils/safeMath.sol";
+import "../utils/SafeMath.sol";
 import "../core/IFT.sol";
+import "../core/IFTEnumerable.sol";
 
 
-contract FungibleToken is IFT {
+contract FungibleToken is IFT, IFTEnumerable {
     // using safe math lib to prevent overflow
     using SafeMath for uint256;
     

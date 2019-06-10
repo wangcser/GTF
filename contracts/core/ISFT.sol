@@ -8,11 +8,8 @@
 
 pragma solidity ^0.5.8;
 
-import "./ISFTEnumerable.sol";
-import "./ISFTMetadata.sol";
 
-
-interface ISFT is ISFTEnumerable {
+interface ISFT {
     // events
     event Transfer(address indexed from, address indexed to, uint256 indexed cid, uint256 value);
     event Approval(address indexed owner, address indexed operator, uint256 indexed cid, uint256 value);
@@ -26,7 +23,7 @@ interface ISFT is ISFTEnumerable {
      * @param cid sft class id to query
      * @return uint256 for amount of given cid in owner
      */
-    function balanceOfByClass(address owner, uint256 cid) external view returns (uint256);
+    // function balanceOfByClass(address owner, uint256 cid) external view returns (uint256);
 
     /**
      * @dev check the given sft class allowance from owner to operator
@@ -35,7 +32,7 @@ interface ISFT is ISFTEnumerable {
      * @param cid sft class id to query
      * @return uint256 for amount of allowance
      */
-    function allowance(address owner, address oprator, uint256 cid) external view returns (uint256);
+    function allowance(address owner, address operator, uint256 cid) external view returns (uint256);
 
 
     // write-state methods
@@ -62,5 +59,5 @@ interface ISFT is ISFTEnumerable {
      * @param cid sft class id
      * @param value amount of sft to be approved
      */
-    function approve(address oprator, uint256 cid, uint256 value) external;
+    function approve(address operator, uint256 cid, uint256 value) external;
 }

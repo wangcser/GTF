@@ -8,11 +8,8 @@
 
 pragma solidity ^0.5.8;
 
-import "./IFTEnumerable.sol";
-import "./IFTMetadata.sol";
 
-
-interface IFT is IFTEnumerable {
+interface IFT {
     // events for transaction
     // event for notice end users the transfer result.
     event Transfer(address indexed from, address indexed to, uint256 value);
@@ -21,7 +18,6 @@ interface IFT is IFTEnumerable {
     
     
     // read-state methods for single user
-    
     /**
      * @dev get the ft balance of given address
      * @param owner address of ft owner
@@ -39,7 +35,6 @@ interface IFT is IFTEnumerable {
 
 
     // write-state methods for single user
-
     /**
      * @dev transfer ft from owner to recipent, the msg.sender should have enough amount of fts
      * @param to address of ft recipent

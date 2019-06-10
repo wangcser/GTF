@@ -11,7 +11,7 @@ pragma solidity ^0.5.8;
 import "./ITokenMetadata.sol";
 
 
-interface IFTMetadata is ITokenMetadata {
+interface IFTMetadata {
     // read-state methods for token
 
     /**

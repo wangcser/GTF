@@ -10,9 +10,10 @@ pragma solidity ^0.5.8;
 
 import "../utils/SafeMath.sol";
 import "../core/INFT.sol";
+import "../core/INFTEnumerable.sol";
 
 
-contract NonFungibleToken is INFT {
+contract NonFungibleToken is INFT, INFTEnumerable {
 
     using SafeMath for uint256;
 
@@ -72,7 +73,7 @@ contract NonFungibleToken is INFT {
         _transferFrom(from, to, tid);
     }
 
-    function approve(address operator, uint256 tid) public returns (bool) {
+    function approve(address operator, uint256 tid) public {
         require(msg.sender == _tokenToOwner[tid], "owner invalid.");
 
         _approvals[tid] = operator;
