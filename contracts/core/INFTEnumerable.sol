@@ -12,7 +12,7 @@ pragma solidity ^0.5.8;
 contract INFTEnumerable {
     // read-state method
     function totalSupply() external view returns (uint256[] memory);
-    function totalSupplyByAmount() external view returns (uint256);
+    // function totalSupplyByAmount() external view returns (uint256);
     function balanceOf(address owner) external view returns (uint256[] memory);
-    function balanceOfByAmount(address owner) external view returns (uint256);
+    // function balanceOfByAmount(address owner) external view returns (uint256);
 }

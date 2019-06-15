@@ -8,8 +8,7 @@
 
 pragma solidity ^0.5.8;
 
-import "./ITokenMetadata.sol";
 
-interface ISTMetadata is ITokenMetadata {
+interface ISFTMetadata {
     function tokenInfo(uint256 cid) external view returns (string memory);
 }
