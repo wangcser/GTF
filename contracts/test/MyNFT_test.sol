@@ -1,12 +1,13 @@
 pragma solidity >=0.4.0 <0.6.0;
 
 import "remix_tests.sol"; // this import is automatically injected by Remix.
-import "./MyFT.sol";
+import "./MyNFT.sol";
 import "./FakeContract.sol";
+
 
 contract test_env {
     // declare the test contrac
-    MyFungibleToken myft;
+    MySemiFungibleToken mysft;
     FakeContract fc1;
     FakeContract fc2;
     
@@ -25,18 +26,25 @@ contract test_env {
     address CA2; // another contract address for test
     
     // declare the helper value
-    uint256 initSupply = 1000;
+    uint256[] tokenId;
+    uint256 tokenNum = 5;
     
     // init the addresses and values before all test
     function beforeAll() public {
         // here should instantiate tested contract
-        myft = new MyFungibleToken();
+        mysft = new MyFungibleToken();
         fc1 = new FakeContract();
         fc2 = new FakeContract();
 
-        myCA = address(myft);
+        myCA = address(mysft);
         CA1 = address(fc1);
         CA2 = address(fc2);
+
+        uint tid = 1001;
+        for(uint i = 0; i < classNum; ++i) {
+            tokenId.push(tid);
+            tid++;
+        }
     }
     
     // set local state before each test
@@ -44,8 +52,6 @@ contract test_env {
         
     }
 }
-
-
 contract test_balanceOf is test_env {
 
     function checkMint() private returns (bool) {
@@ -162,6 +168,40 @@ contract test_allwance is test_env {
         
         Assert.equal(expected, result, "error msg");
     }
+}
+
+
+contract test_ownerOf is test_env {
+
+    function checkMint() private returns (bool) {
+        mynft.mint(coinbase, tid1);
+        
+        address expected = alice;
+        address result = mynft.ownerOf(tid1);
+        Assert.equal(alice, result, "contract mint error");
+    }
+    
+    // function TestApproveForValidEOA() public returns (bool) {
+    //     uint256 value = 100;
+    //     myft.approve(alice, value);
+    //     uint256 expected = 100;
+    //     uint256 result = myft.allowance(owner, alice);
+        
+    //     myft.approve(alice, 0);
+        
+    //     Assert.equal(expected, result, "error msg");
+    // }
+    
+    // function TestApproveForValidCA() public returns (bool) {
+    //     uint256 value = 100;
+    //     myft.approve(CA1, value);
+    //     uint256 expected = 100;
+    //     uint256 result = myft.allowance(owner, CA1);
+        
+    //     myft.approve(CA1, 0);
+        
+    //     Assert.equal(expected, result, "error msg");
+    // }
 }
 
     

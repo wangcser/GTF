@@ -80,3 +80,21 @@ note that `TestsAccounts` is filled with all the accounts available in `web3.eth
 
 - 测试用例之间可能会相互干扰
 - 每次更新用例代码需要编译再执行测试
+- 目前的账户方案如何切换合约的调用者？也就是说调用合约的地址如何指定（也就是如何设置 msg.sender 的问题）
+- 对于合约中方法执行异常的行为，因为测试代码也是一个合约，因此抛出异常后并不能够得到处理，可能不能在内部代码的测试中解决这个问题
+
+> 使用 try-catch  方式进行异常处理是不可能的：
+>
+> <https://learnblockchain.cn/2018/04/07/solidity-errorhandler/>
+>
+> <https://ethereum.stackexchange.com/questions/15182/solidity-is-there-any-catch-mechanism-for-throw-if-not-switch-into-return-usag>
+>
+> <https://ethereum.stackexchange.com/questions/54855/obtaining-addresses-for-tests-in-solidity>
+>
+> <https://ethereum.stackexchange.com/questions/61048/is-there-a-way-to-test-an-onlyowner-function-from-a-truffle-solidity-unit-test?rq=1>
+
+![1560651762980](unit_test.assets/1560651762980.png)
+
+- 因此，这些问题只能使用外部脚本来完成
+- 所以，对于测试用例中执行失败的场景不在该测试脚本中测试
+
