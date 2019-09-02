@@ -61,17 +61,17 @@ We choose ethereum blockchain as our first test bed, our tool chain as follows:
 
   2. finish the core module unit test
 
-- [x] 0.2.x: go though the branches
+- [ ] 0.2.x: go though the branches
   1. finish the branches modules
   2. finish the function test
 
-- [x] 0.3.x: tune the system
+- [ ] 0.3.x: tune the system
 
   1. system level debug
 
   2. finish the system test
 
-- [x] 0.4.x: document stage
+- [ ] 0.4.x: document stage
 
   1. finish the error handing
 
